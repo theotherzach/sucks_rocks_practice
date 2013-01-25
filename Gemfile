@@ -12,7 +12,7 @@ end
 gem 'jquery-rails'
 
 group :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.12.0'
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'vcr' 
