@@ -5,11 +5,15 @@ class CachedScore < ActiveRecord::Base
   def self.for_term(term)
     cached_score = find_by_term(term) or raise NoScore
     result = cached_score.score
-    result || RockScore::NoScore
+    if result 
+      RockScore::Score.new(term, result)
+    else
+      RockScore::NoScore.new(term)
+    end
   end
 
-  def self.save_score(term, score)
-    score = nil if score == RockScore::NoScore
-    create!(:term => term, :score => score)
+  def self.save_score(score)
+    value = score.has_score? ? score.value : nil
+    create!(:term => score.term, :score => value)
   end
 end

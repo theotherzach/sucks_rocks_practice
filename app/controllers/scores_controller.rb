@@ -2,7 +2,7 @@ class ScoresController < ApplicationController
   def show
     term = params[:term]
     score = ScoreCache.for_term(term)
-    score = nil if score == RockScore::NoScore
-    render :json =>  { :term => term, :score => score }.to_json
+    value = score.has_score? ? score.value : nil
+    render :json =>  { :term => term, :score => value }.to_json
   end
 end

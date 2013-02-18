@@ -1,9 +1,14 @@
 require 'spec_helper'
 
 describe CachedScore do
+  before do
+    @score = RockScore::Score.new("microsoft", 7.5)
+    @no_score = RockScore::NoScore.new("microsoft")
+  end
+
   it "remembers scores" do
-    CachedScore.save_score("microsoft", 7.5)
-    CachedScore.for_term("microsoft").should == 7.5
+    CachedScore.save_score(@score)
+    CachedScore.for_term("microsoft").value.should == 7.5
   end
 
   it "raises an exception if the term isn't cached" do
@@ -13,7 +18,7 @@ describe CachedScore do
   end
 
   it "saves no scores as nil" do
-    CachedScore.save_score("microsoft", RockScore::NoScore)
-    CachedScore.for_term("microsoft").should == RockScore::NoScore
+    CachedScore.save_score(@no_score)
+    CachedScore.for_term("microsoft").has_score?.should == false
   end
 end
